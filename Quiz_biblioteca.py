@@ -5,25 +5,26 @@ Angie Juliana Rojas Montaño
 Maira Tatiana Quiroga Peralta
 
 Enunciado: 
-La biblioteca Edu necesita llevar un control de los libros, puesto que al hacer el inventario se evidenció que hacen falta algunos de ellos. Se necesita un programa que permita registrar los libros, buscar los autores por el nombre del libro, crear una copia de seguridad de todos los libros, eliminar el libro que desee (ya sea porque se equivocó en algo que agregó), añadir un nuevo libro, visualizar todos los libros, obtener el total de libros que hay y mostrar los libros que se encuentran en alguna letra del abecedario.'''
+La biblioteca Edu necesita llevar un control de los libros, puesto que al hacer el inventario se evidenció que hacen falta algunos de ellos. Se necesita un programa que permita registrar los libros, buscar los autores por el nombre del libro, crear una copia de seguridad de todos los libros, eliminar el libro que desee (ya sea porque se equivocó en algo que agregó), añadir un nuevo libro, visualizar todos los libros, obtener el total de libros que hay, mostrar los libros que se encuentran en alguna letra del abecedario y cuantos libros tiene un autor en especifíco'''
 biblioteca = {}#diccionario
-copia = []#lista
-tupla=()#tupla
+copia_seguridad = []#lista
+copiafinal=()
+autoreslibros = []
 
 while True:
     libro = input("Ingrese el nombre del libro: ").lower()
-    autor = input("Ingrese el autor del libro: ")
+    autor = input("Ingrese el autor del libro: ").lower()
+    autoreslibros.append(autor)
     letrainicial = libro[0]
     if letrainicial not in biblioteca:
         biblioteca[letrainicial] = {}
     biblioteca[letrainicial][libro] = autor
-    copia.extend([autor, libro])
-    continuar = input("¿Desea agregar otro libro? (s/selecccione otra tecla): ")
+    continuar = input("¿Desea agregar otro libro? (s/oprima cualquier otra tecla): ")
     if continuar.lower() != 's':
         break
 
 while True:
-    opcion = int(input("Selecciona la acción que deseas realizar: \n1. Mostrar los libros existentes\n2. Mostrar los autores disponibles\n3. Buscar los libros por el autor\n4. Total de libros agregados\n5. Eliminar un libro\n6. Generar Copia de seguridad de los libros\n7. Ver Copia de Seguridad\n8.Añadir otro libro\n9. Mostrar libros por letra\n10.Salir\n"))
+    opcion = int(input("Selecciona la acción que deseas realizar: \n1. Mostrar los libros existentes\n2. Mostrar los autores disponibles\n3. Buscar los libros por el autor\n4. Total de libros agregados\n5. Eliminar un libro\n6. Generar Copia de seguridad de los libros\n7. Ver Copia de Seguridad\n8. Añadir otro libro\n9. Mostrar libros por letra\n10. Buscar cuantos libros tengo de un autor\n11. Salir\n"))
     
     if opcion == 1:
         print("\n--- Software bibliotecario ---")
@@ -67,10 +68,16 @@ while True:
     
     elif opcion == 6:
         print("\nCopia de Seguridad de los libros:")
-        tupla=tuple(copia)
-        print(copia)
+        copia_seguridad.append([f"Libro: {libro}, Autor: {autor}" 
+            for libros in biblioteca.values() 
+            for libro, autor in libros.items()])
+        print(copia_seguridad.sort(reverse=True))
     elif opcion == 7:
-        print(tupla)
+        copiafinal=tuple(copia_seguridad)
+        if len(copiafinal)>0:
+            print(copiafinal)
+        else:
+            print("No se cuenta actualemtente con una copia de seguridad")
     elif opcion == 8:
         libro = input("Ingrese el nombre del libro: ").lower()
         letrainicial = libro[0]
@@ -89,6 +96,13 @@ while True:
                     for libro, autor in libros.items():
                         print(f"Libro: {libro}, Autor: {autor}")
     elif opcion==10:        
+        autorabuscar=input("Ingrese el nombre del autor").lower()
+        numeroDeLibros = autoreslibros.count(autorabuscar)
+        if numeroDeLibros>0:
+            print(f"El autor {autorabuscar} cuenta con {numeroDeLibros} en la biblioteca")
+        else:
+            print(f"No se cuenta con libros del autor {autorabuscar} en la biblioteca")
+    elif opcion==11:        
         print("Saliendo del programa.")
         break
     else:
